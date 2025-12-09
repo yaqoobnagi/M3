@@ -1,45 +1,90 @@
 #include <iostream>
-#include "Date.h"
+#include "NumberArray.h"
 
 using namespace std;
 
 int main() {
-    // Test default constructor
-    Date date1;
-    cout << "Test default constructor: " << date1.printFormat1() << endl;  // Expected: 1/1/1900
 
-    // Test constructor with valid date
-    Date date2(2, 28, 2009);
-    cout << "Test constructor with valid date: " << date2.printFormat1() << endl;  // Expected: 2/28/2009
+    cout << "----- Test constructors -----\n";
 
-    // Test constructor with invalid month
-    Date date3(45, 2, 2009);
-    cout << "Test constructor with invalid month (45, 2, 2009): " << date3.printFormat1() << endl;  // Expected: 1/1/1900
+    NumberArray<int> intArr1;
+    cout << "From default constructor: Integer array of size 10\n";
+    intArr1.printArray();
 
-    // Test constructor with invalid day
-    Date date4(2, 29, 2009);
-    cout << "Test constructor with invalid day (2/29/2009): " << date4.printFormat1() << endl;  // Expected: 1/1/1900
+    NumberArray<double> dblArr1;
+    cout << "From default constructor: Double array of size 10\n";
+    dblArr1.printArray();
 
-    // Test setDate with bad month
-    date1.setDate(13, 25, 2020);
-    cout << "Test setDate with bad month (13): " << date1.printFormat1() << endl;  // Expected: 1/1/1900
+    NumberArray<int> intArr2(15);
+    cout << "From constructor with parameters: Integer array of size 15\n";
+    intArr2.printArray();
 
-    // Test setDate with bad day
-    date1.setDate(4, 31, 2009);
-    cout << "Test setDate with bad day (4, 31, 2009): " << date1.printFormat1() << endl;  // Expected: 1/1/1900
+    NumberArray<double> dblArr2(15);
+    cout << "From constructor with parameters: Double array of size 15\n";
+    dblArr2.printArray();
 
-    // Test leap year with bad date (2/29/2009)
-    date1.setDate(2, 29, 2009);
-    cout << "Test for leap year with bad date (2/29/2009): " << date1.printFormat1() << endl;  // Expected: 1/1/1900
 
-    // Test leap year with good date (2/29/2008)
-    Date date5(2, 29, 2008);
-    cout << "Test for leap year with good date (2/29/2008): " << date5.printFormat1() << endl;  // Expected: 2/29/2008
+    cout << "----- Test mutator -----\n";
+    for (int i = 0; i < 15; i++) {
+        intArr2.setNumber(i, rand() % 100);
+        dblArr2.setNumber(i, (rand() % 10000) / 100.0);
+    }
 
-    // Test the print formats
-    cout << "Test print formats:" << endl;
-    cout << date5.printFormat2() << endl;  // Expected: February 29, 2008
-    cout << date5.printFormat3() << endl;  // Expected: 29 February 2008
+    cout << "Integer array filled with numbers:\n";
+    intArr2.printArray();
+
+    cout << "Double array filled with numbers:\n";
+    dblArr2.printArray();
+
+    cout << "Trying to set a number with an out of bounds index (20):\n";
+    try {
+        intArr2.setNumber(20, 5);
+    } catch (out_of_range& e) {
+        cout << "Integer array ...\nThe index is out of the bounds of the array, number not stored\n";
+    }
+
+    try {
+        dblArr2.setNumber(20, 5.5);
+    } catch (out_of_range& e) {
+        cout << "Double array ...\nThe index is out of the bounds of the array, number not stored\n";
+    }
+
+    cout << "----- Test accessors -----\n";
+    try {
+        cout << "Access integer item at index 5: " << intArr2.getNumber(5) << endl;
+        cout << "Access double item at index 5: " << dblArr2.getNumber(5) << endl;
+    } catch (...) {}
+
+    cout << "Trying to access a number with an out of bounds index (20):\n";
+    try {
+        intArr2.getNumber(20);
+    } catch (...) {
+        cout << "Integer array ...\nThe index is out of the bounds of the array, number not stored\n";
+    }
+
+    try {
+        dblArr2.getNumber(20);
+    } catch (...) {
+        cout << "Double array ...\nThe index is out of the bounds of the array, number not stored\n";
+    }
+
+    cout << "The minimum value in the integer array is: " << intArr2.getMin() << endl;
+    cout << "The maximum value in the integer array is: " << intArr2.getMax() << endl;
+    cout << "The average of the values in the integer array is: " << intArr2.getAverage() << endl;
+
+    cout << "The minimum value in the double array is: " << dblArr2.getMin() << endl;
+    cout << "The maximum value in the double array is: " << dblArr2.getMax() << endl;
+    cout << "The average of the values in the double array is: " << dblArr2.getAverage() << endl;
+
+    cout << "----- Print arrays -----\n";
+    cout << "Integer array:\n";
+    intArr2.printArray();
+
+    cout << "Double array:\n";
+    dblArr2.printArray();
+
+    cout << "----- Test destructor -----\n";
+    cout << "Exiting program, destructor will be called to free memory.\n";
 
     return 0;
 }
